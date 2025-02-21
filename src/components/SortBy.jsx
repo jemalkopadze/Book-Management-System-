@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setSearchFilter,
   setGenreFilter,
@@ -7,10 +7,20 @@ import {
 
 function SortBy() {
   const dispatch = useDispatch();
-  const books = useSelector((state) => state.books.books);
 
-  // Get unique genres from books
-  const uniqueGenres = ["all", ...new Set(books.map((book) => book.genre))];
+  // Static genres list
+  const genres = [
+    "All",
+    "Fiction",
+    "Non-Fiction",
+    "Mystery",
+    "Science Fiction",
+    "Fantasy",
+    "Romance",
+    "Horror",
+    "Biography",
+    "History",
+  ];
 
   return (
     <div className="filter-container">
@@ -27,10 +37,11 @@ function SortBy() {
         <select
           onChange={(e) => dispatch(setGenreFilter(e.target.value))}
           className="genre-select"
+          defaultValue="All"
         >
-          {uniqueGenres.map((genre) => (
+          {genres.map((genre) => (
             <option key={genre} value={genre}>
-              {genre === "all" ? "All Genres" : genre}
+              {genre}
             </option>
           ))}
         </select>

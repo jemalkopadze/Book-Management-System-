@@ -3,20 +3,18 @@ import { removeBook, updateRating } from "../features/books/booksSlice";
 import "../App.css";
 
 function Result() {
-  console.log("Result component mounted");
   const books = useSelector((state) => state.books.books);
   const filters = useSelector((state) => state.books.filters);
   const dispatch = useDispatch();
 
-  console.log("Books in Result: ", books);
-
-  const filteredBooks = books
+  const filteredAndSortedBooks = [...books]
     .filter((book) => {
       const matchesSearch = book.title
         .toLowerCase()
         .includes(filters.search.toLowerCase());
       const matchesGenre =
-        filters.genre === "all" || book.genre === filters.genre;
+        filters.genre === "All" ||
+        book.genre.toLowerCase() === filters.genre.toLowerCase();
       return matchesSearch && matchesGenre;
     })
     .sort((a, b) => {
@@ -28,7 +26,8 @@ function Result() {
 
   return (
     <div className="Addbook">
-      {filteredBooks.map((book) => (
+      <h2>Books</h2>
+      {filteredAndSortedBooks.map((book) => (
         <div key={book.id} className="result">
           <h3>{book.title}</h3>
           <p>{book.genre}</p>
